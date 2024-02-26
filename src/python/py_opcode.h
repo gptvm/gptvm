@@ -1,0 +1,299 @@
+#pragma once
+
+#define POP_TOP 1
+#define ROT_TWO 2
+#define ROT_THREE 3
+#define DUP_TOP 4
+#define DUP_TOP_TWO 5
+#define ROT_FOUR 6
+#define NOP 9
+#define UNARY_POSITIVE 10
+#define UNARY_NEGATIVE 11
+#define UNARY_NOT 12
+#define UNARY_INVERT 15
+#define BINARY_MATRIX_MULTIPLY 16
+#define INPLACE_MATRIX_MULTIPLY 17
+#define BINARY_POWER 19
+#define BINARY_MULTIPLY 20
+#define BINARY_MODULO 22
+#define BINARY_ADD 23
+#define BINARY_SUBTRACT 24
+#define BINARY_SUBSCR 25
+#define BINARY_FLOOR_DIVIDE 26
+#define BINARY_TRUE_DIVIDE 27
+#define INPLACE_FLOOR_DIVIDE 28
+#define INPLACE_TRUE_DIVIDE 29
+#define GET_LEN 30
+#define MATCH_MAPPING 31
+#define MATCH_SEQUENCE 32
+#define MATCH_KEYS 33
+#define COPY_DICT_WITHOUT_KEYS 34
+#define WITH_EXCEPT_START 49
+#define GET_AITER 50
+#define GET_ANEXT 51
+#define BEFORE_ASYNC_WITH 52
+#define END_ASYNC_FOR 54
+#define INPLACE_ADD 55
+#define INPLACE_SUBTRACT 56
+#define INPLACE_MULTIPLY 57
+#define INPLACE_MODULO 59
+#define STORE_SUBSCR 60
+#define DELETE_SUBSCR 61
+#define BINARY_LSHIFT 62
+#define BINARY_RSHIFT 63
+#define BINARY_AND 64
+#define BINARY_XOR 65
+#define BINARY_OR 66
+#define INPLACE_POWER 67
+#define GET_ITER 68
+#define GET_YIELD_FROM_ITER 69
+#define PRINT_EXPR 70
+#define LOAD_BUILD_CLASS 71
+#define YIELD_FROM 72
+#define GET_AWAITABLE 73
+#define LOAD_ASSERTION_ERROR 74
+#define INPLACE_LSHIFT 75
+#define INPLACE_RSHIFT 76
+#define INPLACE_AND 77
+#define INPLACE_XOR 78
+#define INPLACE_OR 79
+#define LIST_TO_TUPLE 82
+#define RETURN_VALUE 83
+#define IMPORT_STAR 84
+#define SETUP_ANNOTATIONS 85
+#define YIELD_VALUE 86
+#define POP_BLOCK 87
+#define POP_EXCEPT 89
+#define HAVE_ARGUMENT 90
+#define STORE_NAME 90
+#define DELETE_NAME 91
+#define UNPACK_SEQUENCE 92
+#define FOR_ITER 93
+#define UNPACK_EX 94
+#define STORE_ATTR 95
+#define DELETE_ATTR 96
+#define STORE_GLOBAL 97
+#define DELETE_GLOBAL 98
+#define ROT_N 99
+#define LOAD_CONST 100
+#define LOAD_NAME 101
+#define BUILD_TUPLE 102
+#define BUILD_LIST 103
+#define BUILD_SET 104
+#define BUILD_MAP 105
+#define LOAD_ATTR 106
+#define COMPARE_OP 107
+#define IMPORT_NAME 108
+#define IMPORT_FROM 109
+#define JUMP_FORWARD 110
+#define JUMP_IF_FALSE_OR_POP 111
+#define JUMP_IF_TRUE_OR_POP 112
+#define JUMP_ABSOLUTE 113
+#define POP_JUMP_IF_FALSE 114
+#define POP_JUMP_IF_TRUE 115
+#define LOAD_GLOBAL 116
+#define IS_OP 117
+#define CONTAINS_OP 118
+#define RERAISE 119
+#define JUMP_IF_NOT_EXC_MATCH 121
+#define SETUP_FINALLY 122
+#define LOAD_FAST 124
+#define STORE_FAST 125
+#define DELETE_FAST 126
+#define GEN_START 129
+#define RAISE_VARARGS 130
+#define CALL_FUNCTION 131
+#define MAKE_FUNCTION 132
+#define BUILD_SLICE 133
+#define LOAD_CLOSURE 135
+#define LOAD_DEREF 136
+#define STORE_DEREF 137
+#define DELETE_DEREF 138
+#define CALL_FUNCTION_KW 141
+#define CALL_FUNCTION_EX 142
+#define SETUP_WITH 143
+#define EXTENDED_ARG 144
+#define LIST_APPEND 145
+#define SET_ADD 146
+#define MAP_ADD 147
+#define LOAD_CLASSDEREF 148
+#define MATCH_CLASS 152
+#define SETUP_ASYNC_WITH 154
+#define FORMAT_VALUE 155
+#define BUILD_CONST_KEY_MAP 156
+#define BUILD_STRING 157
+#define LOAD_METHOD 160
+#define CALL_METHOD 161
+#define LIST_EXTEND 162
+#define SET_UPDATE 163
+#define DICT_MERGE 164
+#define DICT_UPDATE 165
+
+const char *opname[] = {
+    "",
+    "POP_TOP",
+    "ROT_TWO",
+    "ROT_THREE",
+    "DUP_TOP",
+    "DUP_TOP_TWO",
+    "ROT_FOUR",
+    "",
+    "",
+    "NOP",
+    "UNARY_POSITIVE",
+    "UNARY_NEGATIVE",
+    "UNARY_NOT",
+    "",
+    "",
+    "UNARY_INVERT",
+    "BINARY_MATRIX_MULTIPLY",
+    "INPLACE_MATRIX_MULTIPLY",
+    "",
+    "BINARY_POWER",
+    "BINARY_MULTIPLY",
+    "",
+    "BINARY_MODULO",
+    "BINARY_ADD",
+    "BINARY_SUBTRACT",
+    "BINARY_SUBSCR",
+    "BINARY_FLOOR_DIVIDE",
+    "BINARY_TRUE_DIVIDE",
+    "INPLACE_FLOOR_DIVIDE",
+    "INPLACE_TRUE_DIVIDE",
+    "GET_LEN",
+    "MATCH_MAPPING",
+    "MATCH_SEQUENCE",
+    "MATCH_KEYS",
+    "COPY_DICT_WITHOUT_KEYS",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "WITH_EXCEPT_START",
+    "GET_AITER",
+    "GET_ANEXT",
+    "BEFORE_ASYNC_WITH",
+    "",
+    "END_ASYNC_FOR",
+    "INPLACE_ADD",
+    "INPLACE_SUBTRACT",
+    "INPLACE_MULTIPLY",
+    "",
+    "INPLACE_MODULO",
+    "STORE_SUBSCR",
+    "DELETE_SUBSCR",
+    "BINARY_LSHIFT",
+    "BINARY_RSHIFT",
+    "BINARY_AND",
+    "BINARY_XOR",
+    "BINARY_OR",
+    "INPLACE_POWER",
+    "GET_ITER",
+    "GET_YIELD_FROM_ITER",
+    "PRINT_EXPR",
+    "LOAD_BUILD_CLASS",
+    "YIELD_FROM",
+    "GET_AWAITABLE",
+    "LOAD_ASSERTION_ERROR",
+    "INPLACE_LSHIFT",
+    "INPLACE_RSHIFT",
+    "INPLACE_AND",
+    "INPLACE_XOR",
+    "INPLACE_OR",
+    "",
+    "",
+    "LIST_TO_TUPLE",
+    "RETURN_VALUE",
+    "IMPORT_STAR",
+    "SETUP_ANNOTATIONS",
+    "YIELD_VALUE",
+    "POP_BLOCK",
+    "",
+    "POP_EXCEPT",
+    "STORE_NAME",
+    "DELETE_NAME",
+    "UNPACK_SEQUENCE",
+    "FOR_ITER",
+    "UNPACK_EX",
+    "STORE_ATTR",
+    "DELETE_ATTR",
+    "STORE_GLOBAL",
+    "DELETE_GLOBAL",
+    "ROT_N",
+    "LOAD_CONST",
+    "LOAD_NAME",
+    "BUILD_TUPLE",
+    "BUILD_LIST",
+    "BUILD_SET",
+    "BUILD_MAP",
+    "LOAD_ATTR",
+    "COMPARE_OP",
+    "IMPORT_NAME",
+    "IMPORT_FROM",
+    "JUMP_FORWARD",
+    "JUMP_IF_FALSE_OR_POP",
+    "JUMP_IF_TRUE_OR_POP",
+    "JUMP_ABSOLUTE",
+    "POP_JUMP_IF_FALSE",
+    "POP_JUMP_IF_TRUE",
+    "LOAD_GLOBAL",
+    "IS_OP",
+    "CONTAINS_OP",
+    "RERAISE",
+    "",
+    "JUMP_IF_NOT_EXC_MATCH",
+    "SETUP_FINALLY",
+    "",
+    "LOAD_FAST",
+    "STORE_FAST",
+    "DELETE_FAST",
+    "",
+    "",
+    "GEN_START",
+    "RAISE_VARARGS",
+    "CALL_FUNCTION",
+    "MAKE_FUNCTION",
+    "BUILD_SLICE",
+    "",
+    "LOAD_CLOSURE",
+    "LOAD_DEREF",
+    "STORE_DEREF",
+    "DELETE_DEREF",
+    "",
+    "",
+    "CALL_FUNCTION_KW",
+    "CALL_FUNCTION_EX",
+    "SETUP_WITH",
+    "EXTENDED_ARG",
+    "LIST_APPEND",
+    "SET_ADD",
+    "MAP_ADD",
+    "LOAD_CLASSDEREF",
+    "",
+    "",
+    "",
+    "MATCH_CLASS",
+    "",
+    "SETUP_ASYNC_WITH",
+    "FORMAT_VALUE",
+    "BUILD_CONST_KEY_MAP",
+    "BUILD_STRING",
+    "",
+    "",
+    "LOAD_METHOD",
+    "CALL_METHOD",
+    "LIST_EXTEND",
+    "SET_UPDATE",
+    "DICT_MERGE",
+    "DICT_UPDATE",
+};

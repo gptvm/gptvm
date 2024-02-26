@@ -1,0 +1,14 @@
+file(GLOB GV_RUNTIME_SRCS CONFIGURE_DEPENDS gv_backend_wrapper.cc gv_buffer.cc)
+
+set(GV_RUNTIME_INCLUDE_DIRS "")
+set(GV_RUNTIME_LINK_LIBS onnx jsoncpp ${LibProtobuf})
+
+if (GV_HAS_CUDA)
+    set(GV_RUNTIME_INCLUDE_DIRS ${GV_RUNTIME_INCLUDE_DIRS} ${CUDA_INCLUDE_DIRS})
+    set(GV_RUNTIME_LINK_LIBS ${GV_RUNTIME_LINK_LIBS} ${CUDA_LIBRARIES})
+endif()
+
+add_gptvm_library(gptvmrt ${GV_RUNTIME_SRCS}
+    INCLUDE_DIRS ${GV_RUNTIME_INCLUDE_DIRS}
+    LINK_LIBS ${GV_RUNTIME_LINK_LIBS}
+    DEPENDS gv_config)

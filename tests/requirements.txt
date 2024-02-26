@@ -1,0 +1,8 @@
+onnx==1.15.0
+pytest
+pycuda
+tensorrt
+torch
+ray
+transformers
+numpy

@@ -1,0 +1,1 @@
+add_gptvm_compiler_dialect_library(GVCompilerActor actor_ops.cc)

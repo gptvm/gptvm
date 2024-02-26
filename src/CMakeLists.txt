@@ -1,0 +1,5 @@
+add_subdirectory(compiler)
+add_subdirectory(runtime)
+add_subdirectory(backend)
+add_subdirectory(python)
+add_subdirectory(config)

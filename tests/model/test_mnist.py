@@ -83,7 +83,8 @@ def gptvm_inference(model_path, number=None):
         data_dir + "mnist.onnx", gptvm.GV_NV_GPU)
     # launch the task
     outputs = task.launch(named_input_object)
-    outputs = next(iter(outputs.get().values())).data
+    results, _ = outputs.get()
+    outputs = next(iter(results.values())).data
     # convert the bytes to numpy array
     outputs = numpy.frombuffer(outputs, dtype=numpy.float32).reshape(output_shape)
     print(outputs)

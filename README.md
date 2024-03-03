@@ -40,6 +40,9 @@ benefits to LLM applications:
 
 # Key Features
 
+As a compiler-based distributed computing platform for LLM serving and fine-tuning,
+GPTVM has the following features.
+
 * Multi-backend support
 
   GPTVM provides a platform-independent VM architecture for LLM applications to
@@ -128,4 +131,23 @@ export PATH=$PATH:$PWD/bin
 Invoke `gptvm` instead of `python` then all the magic happens.
 ```shell
 gptvm <your_application.py>
+```
+
+Example to run a LLM model.
++ Download LLaMA model and prepare Python script llama.py:
+```python
+from transformers import AutoTokenizer, AutoModelForCausalLM, LlamaForCausalLM, GenerationConfig
+import torch
+
+model = AutoModelForCausalLM.from_pretrained("<directory of LLaMA model>", torch_dtype=torch.float32, device_map='cpu', _attn_implementation='eager')
+tokenizer = AutoTokenizer.from_pretrained("<directory of LLaMA model>")
+prompt = "Hello there! How are you doing?"
+inputs = tokenizer(prompt, return_tensors="pt")
+generate_ids = model.generate(inputs.input_ids, max_length=512, max_new_tokens=512)
+output = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+print(output)
+```
++ Run with optimization strategy:
+```shell
+gptvm  -d --opt=torch llama.py
 ```

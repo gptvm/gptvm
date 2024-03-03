@@ -41,7 +41,7 @@ class GVObject(object):
         return self.__data_ref
 
     def get(self):
-        datas, device = ray.get(self.__data_ref)
+        datas, shapes, device = ray.get(self.__data_ref)
         outputs = {}
         for name in datas:
             if type(datas[name]) == list:
@@ -53,7 +53,7 @@ class GVObject(object):
                 outputs[name] = GVBuffer(datas[name], device)
             else:
                 assert False
-        return outputs
+        return outputs, shapes
 
     @staticmethod
     def create(

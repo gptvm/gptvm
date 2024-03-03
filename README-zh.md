@@ -13,6 +13,8 @@ GPTVM是一个针对生成式预训练Transformer（GPT）类模型的虚拟机�
 
 # 关键特性
 
+作为一个基于编译技术的、面向LLM Serving和Fine-tuning训练场景的分布式计算平台，GPTVM具有以下特性：
+
 * 多后端支持
 
   GPTVM提供一个平台无关的虚拟机架构，可以支持大语言模型应用部署到各种算力硬件上。GPTVM虚拟机定义了一组LLM原语，只要后端实现了这些原语，就可以自然支持所有大语言模型在这种加速器硬件上的部署。这使各种大语言模型应用可以轻松的部署到非NVIDIA的GPU设备上。
@@ -77,4 +79,23 @@ export PATH=$PATH:$PWD/bin
 使用 `gptvm` 命令行工具代替 `python` 运行python应用程序。
 ```shell
 gptvm <your_application.py>
+```
+
+运行大语言模型示例。
++ 下载LLaMA模型并准备Python脚本llama.py:
+```python
+from transformers import AutoTokenizer, AutoModelForCausalLM, LlamaForCausalLM, GenerationConfig
+import torch
+
+model = AutoModelForCausalLM.from_pretrained("<LLaMA模型文件所在目录>", torch_dtype=torch.float32, device_map='cpu', _attn_implementation='eager')
+tokenizer = AutoTokenizer.from_pretrained("<LLaMA模型文件所在目录>")
+prompt = "Hello there! How are you doing?"
+inputs = tokenizer(prompt, return_tensors="pt")
+generate_ids = model.generate(inputs.input_ids, max_length=512, max_new_tokens=512)
+output = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+print(output)
+```
++ 指定优化策略运行:
+```shell
+gptvm  -d --opt=torch llama.py
 ```

@@ -69,7 +69,8 @@ class OnnxFillMaskPipeline(FillMaskPipeline):
 
         # call named launch function of gptvm
         outputs = self.task.launch(objects)
-        outputs = next(iter(outputs.get().values())).data
+        results, _ = outputs.get()
+        outputs = next(iter(results.values())).data
         # hard code the dims of output_ids
         outputs = numpy.frombuffer(
             outputs, dtype=numpy.float32, count=dims[0] * dims[1] * 30522

@@ -78,10 +78,12 @@ class GVBackend(object):
             self.__use_cache = True
 
         outputs_bytes = {}
+        outputs_shapes = {}
         free_list = []
         for name in outputs:
             buffer = (c_char * outputs[name][1]).from_address(outputs[name][0])
             outputs_bytes[name] = bytes(buffer)
+            outputs_shapes[name] = outputs[name][2]
             free_list.append((outputs[name][0], device.global_id))
 
             # debug_output = np.frombuffer(bytes(buffer), dtype=np.float32)
@@ -89,4 +91,4 @@ class GVBackend(object):
             # np.save("/tmp/" + name + ".npy", debug_output)
         self.__obbackend.memFree(free_list)
 
-        return outputs_bytes, device
+        return outputs_bytes, outputs_shapes, device

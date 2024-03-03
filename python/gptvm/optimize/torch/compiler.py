@@ -7,7 +7,8 @@ onnx_backend = "gptvm_runtime"
 
 
 def backend(gm: torch.fx.GraphModule, example_inputs):
-    gptvm.log.debug(f"Compiling torch fx graph:\n{str(gm)}")
+    gptvm.log.debug("Compiling torch fx graph")
+    # gptvm.log.debug(f"Compiling torch fx graph:\n{str(gm)}")
 
     input_names = []
     dynamic_axes = dict()
@@ -76,10 +77,24 @@ def backend(gm: torch.fx.GraphModule, example_inputs):
         return _run_model
 
     if onnx_backend == "gptvm_runtime":
-        import numpy
+        import onnxruntime, numpy, tempfile, os
+
+        sess_options = onnxruntime.SessionOptions()
+        sess_options.graph_optimization_level = (
+            onnxruntime.GraphOptimizationLevel.ORT_ENABLE_BASIC
+        )
+        sess_options.optimized_model_filepath = tempfile.mktemp(
+            ".onnx", "gptvm", "/tmp"
+        )
+        session = onnxruntime.InferenceSession(
+            model_bytes.getvalue(), sess_options=sess_options
+        )
+        with open(sess_options.optimized_model_filepath, "rb") as file:
+            model_bytes = file.read()
+        os.remove(sess_options.optimized_model_filepath)
 
         task = gptvm.GVTask.create(
-            model_bytes.getvalue(), gptvm.GVDeviceType.GV_NV_GPU, "gv_tensorrt"
+            model_bytes, gptvm.GVDeviceType.GV_NV_GPU, "gv_tensorrt", 0.3
         )
 
         def _run_model(*inputs):
@@ -90,11 +105,14 @@ def backend(gm: torch.fx.GraphModule, example_inputs):
                 if isinstance(v, torch.Tensor):
                     input_feeds[k] = gptvm.GVObject.create(v)
             object = task.launch(input_feeds)
-            results = object.get()
+            results, shapes = object.get()
             outputs = []
-            for name in results:
-                outputs.append(torch.Tensor(numpy.frombuffer(results[name].data, dtype=numpy.int32)))
-            return [outputs]
+
+            for name in output_names:
+                ar = numpy.frombuffer(results[name].data, dtype=numpy.float32)
+                ar = ar.reshape(shapes[name])
+                outputs.append(torch.from_numpy(ar.copy()))
+            return outputs
 
         return _run_model
 

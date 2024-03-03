@@ -20,7 +20,7 @@ class GVTask(object):
     execution unit has access to.
     """
 
-    def __init__(self, model_bytes, device, backend_name):
+    def __init__(self, model_bytes, device, backend_name, gpu_number=1):
         self.device = device
         self.backend_name = backend_name
         self.model_ref = ray.put(model_bytes)
@@ -34,13 +34,13 @@ class GVTask(object):
         if type(device) == GVDeviceType:
             self.backend = ray.remote(
                 num_cpus=1 if device == GVDeviceType.GV_CPU else 0,
-                num_gpus=1 if device == GVDeviceType.GV_NV_GPU else 0,
+                num_gpus=gpu_number if device == GVDeviceType.GV_NV_GPU else 0,
             )(GVBackend).remote()
         elif type(device) == GVDevice:
             device_type = device.device_type
             self.backend = ray.remote(
                 num_cpus=1 if device_type == GVDeviceType.GV_CPU else 0,
-                num_gpus=1 if device_type == GVDeviceType.GV_NV_GPU else 0,
+                num_gpus=gpu_number if device_type == GVDeviceType.GV_NV_GPU else 0,
                 scheduling_strategy=ray.util.scheduling_strategies.NodeAffinitySchedulingStrategy(
                     ClusterResource.get_ray_id(device.node_id), False
                 ),
@@ -102,6 +102,7 @@ class GVTask(object):
         model_file: str,
         device: GVDeviceType | GVDevice = GVDeviceType.GV_CPU,
         backend_name="",
+        gpu_number=1
     ):
         assert type(device) == GVDeviceType or type(device) == GVDevice, "Type error."
         assert type(backend_name) == str, "Type error."
@@ -110,7 +111,7 @@ class GVTask(object):
         with open(model_file, "rb") as file:
             model_bytes = file.read()
 
-        return GVTask.create(model_bytes, device, backend_name)
+        return GVTask.create(model_bytes, device, backend_name, gpu_number)
 
     @create.register
     @staticmethod
@@ -118,12 +119,13 @@ class GVTask(object):
         model_bytes: bytes,
         device: GVDeviceType | GVDevice = GVDeviceType.GV_CPU,
         backend_name="",
+        gpu_number=1
     ):
         assert type(device) == GVDeviceType or type(device) == GVDevice, "Type error."
         assert type(backend_name) == str, "Type error."
         assert len(model_bytes), "Empty model."
 
-        task = GVTask(model_bytes, device, backend_name)
+        task = GVTask(model_bytes, device, backend_name, gpu_number)
         model = onnx.load(io.BytesIO(model_bytes))
         assert len(model.graph.input), "Empty input."
         assert len(model.graph.output), "Empty output."
